@@ -1,0 +1,129 @@
+import "./tahoma.ttf";
+import { Button, StandardButton } from "std-widgets.slint";
+
+component FormPart inherits HorizontalLayout {
+    in property <string> note;
+    in property <string> label;
+    in property <length> input_width;
+    width: input_width;
+
+
+    Text {
+        vertical-alignment: center;
+        color: black;
+        text: parent.label;
+        horizontal-alignment: right;
+        width: 95px;
+    }
+    Rectangle {
+        width: 9px;
+    }
+    Rectangle {
+        clip: true;
+        background: white;
+        border-color: black;
+        border-width: 1px;
+        height: 23px;
+        width: parent.input_width; // 174px
+
+        TextInput {
+            x: 7px;
+            y: 3px;
+            color: black;
+        }
+    }
+
+    Rectangle {
+        width: 11px;
+    }
+    Text {
+        vertical-alignment: center;
+        color: #303030;
+        text: parent.note;
+        horizontal-alignment: center;
+    }
+}
+
+component WinFormsButton inherits Rectangle {
+    in property <string> label;
+
+    width: 84px;
+    height: 22px;
+    border-color: #ADADAD;
+    border-width: 1px;
+    background: #E1E1E1;
+    Text {
+        vertical-alignment: center;
+        horizontal-alignment: left;
+        color: black;
+        text: parent.label;
+        wrap: word-wrap;
+        max-width: 120px;
+    }
+}
+
+export component MainWindow inherits Window {
+    default-font-family: "Tahoma";
+    default-font-size: 14px;
+    background: #F0F0F0;
+    width: 534px;
+    height: 246px;
+    HorizontalLayout {
+        Image {
+            source: @image-url("osage-left.png");
+            width: 154px;
+            image-fit: preserve;
+        }
+        VerticalLayout {
+            padding-left: 9px;
+            padding-top: 14px;
+            padding-right: 15px;
+            alignment: start;
+            VerticalLayout {
+                padding-right: 42px;
+                Text {
+                    color: black;
+                    text: "i lost my fuckign umbrella again can u give me ur credit cardd information so i can buy another one pls";
+                    wrap: word-wrap;
+                    width: 306px;
+                }
+                VerticalLayout {
+                    height: 105px;
+                    padding-right: 36px;
+                    spacing: 5px;
+                    alignment: center;
+                    FormPart {
+                        label: "card number:";
+                        input_width: 174px;
+                    }
+                    FormPart {
+                        label: "expiration date:";
+                        input_width: 74px;
+                        note: "(MM/YY)";
+                    }
+                    FormPart {
+                        label: "security code:";
+                        input_width: 74px;
+                    }
+                }
+            }
+
+            Rectangle {
+                height: 35px;
+            }
+            HorizontalLayout {
+                alignment: end;
+                spacing: 9px;
+                WinFormsButton {
+                    label: "thank u so much holy fukcj";
+                }
+                WinFormsButton {
+                    label: "muu";
+                }
+                WinFormsButton {
+                    label: "(gong)";
+                }
+            }
+        }
+    }
+}
