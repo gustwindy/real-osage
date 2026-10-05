@@ -7,7 +7,6 @@ component FormPart inherits HorizontalLayout {
     in property <length> input_width;
     width: input_width;
 
-
     Text {
         vertical-alignment: center;
         color: black;
@@ -21,12 +20,12 @@ component FormPart inherits HorizontalLayout {
     Rectangle {
         clip: true;
         background: white;
-        border-color: black;
+        border-color: input.has-focus ? #0078D7 : black;
         border-width: 1px;
         height: 23px;
         width: parent.input_width; // 174px
 
-        TextInput {
+        input := TextInput {
             x: 7px;
             y: 3px;
             color: black;
@@ -45,27 +44,49 @@ component FormPart inherits HorizontalLayout {
 }
 
 component WinFormsButton inherits Rectangle {
+    in property <bool> default;
+    in property <bool> extra;
     in property <string> label;
+    callback clicked();
 
     width: 84px;
     height: 22px;
-    border-color: #ADADAD;
-    border-width: 1px;
-    background: #E1E1E1;
+
+    border-color: touch.has-hover || default ? #0078D7 : #ADADAD;
+    border-width: default ? 2px : 1px;
+    background: touch.has-hover ? #C0DDF4 : #E1E1E1;
+
+    touch := TouchArea {
+        clicked => {
+            parent.clicked();
+        }
+    }
+
     Text {
+        x: extra ? 2px : 0px;
+        y: extra ? 3px : 0px;
+        horizontal-alignment: extra ? left : center;
+        width: extra ? 104px : 84px;
+        height: extra ? 30px : 22px;
+
         vertical-alignment: center;
-        horizontal-alignment: left;
         color: black;
         text: parent.label;
         wrap: word-wrap;
-        max-width: 120px;
     }
 }
 
-export component MainWindow inherits Window {
+component WinFormsWindow inherits Window {
     default-font-family: "Tahoma";
     default-font-size: 14px;
     background: #F0F0F0;
+    title: "real osage";
+    icon: @image-url("inabakumori.png");
+}
+
+export component MainWindow inherits WinFormsWindow {
+    callback thanks();
+
     width: 534px;
     height: 246px;
     HorizontalLayout {
@@ -116,12 +137,59 @@ export component MainWindow inherits Window {
                 spacing: 9px;
                 WinFormsButton {
                     label: "thank u so much holy fukcj";
+                    extra: true;
+                    default: true;
+                    z: 1.0;
+                    clicked => {
+                        root.thanks();
+                    }
                 }
                 WinFormsButton {
                     label: "muu";
                 }
                 WinFormsButton {
                     label: "(gong)";
+                }
+            }
+        }
+    }
+}
+
+export component PopUp inherits WinFormsWindow {
+    callback ok();
+
+    width: 194px;
+    height: 136px;
+    HorizontalLayout {
+        Image {
+            source: @image-url("umbrella.png");
+            width: 80px;
+            image-fit: preserve;
+        }
+        VerticalLayout {
+            padding-left: 1px;
+            padding-bottom: 14px;
+            padding-right: 15px;
+            alignment: end;
+            Text {
+                vertical-alignment: center;
+                horizontal-alignment: center;
+                color: black;
+                text: "thakns for umberlla";
+                wrap: word-wrap;
+            }
+            Rectangle {
+                height: 35px;
+            }
+            HorizontalLayout {
+                alignment: end;
+                spacing: 9px;
+                WinFormsButton {
+                    label: "OK";
+                    default: true;
+                    clicked => {
+                        root.ok();
+                    }
                 }
             }
         }
